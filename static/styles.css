@@ -1,0 +1,257 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+ 
+}
+header {
+  margin-bottom: 30px; /* pravi prostor ispod zaglavlja */
+}
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f78feb;
+  color: #8c035a;
+  padding: 40px;
+}
+
+
+h1,h2,h3{
+  color: #8c035a;
+  margin-bottom: 30px;
+  text-align: center;   /* centrira tekst */
+}
+
+hr {
+  border: none;
+  border-top: 2px solid #fff;
+  margin: 20px 0;
+}
+.container{
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #ea48c7;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;              /*razmak između polja */
+  align-items: stretch;   /*nateraj decu da budu 100% širine */
+}
+/* label da pravilno stoje iznad polja */
+form label {
+  display: block;          /*svaki label u svoj red */
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+/* polja i dugme preko cele širine forme */
+form input[type="text"],
+form input[type="number"],
+form select,
+form textarea,
+form button {
+  width: 100%;             /* razvuci na punu širinu */
+  margin-bottom: 0;        /*  gap već pravi razmak */
+}
+
+/* malo komfornije dugme */
+form button {
+  padding: 10px 16px;      /*  veće, lepše dugme */
+  font-size: 16px;
+  margin-top: 10px;
+  margin-bottom: 10 px;
+}
+
+
+input, select, button, textarea {
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+button {
+  background-color: #de2289;
+  color: rgb(254, 254, 254);
+  border: 1px solid #e11d48;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #ec81e5;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 20px;
+}
+
+th, td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  background-color: inherit;
+}
+
+tr:hover td, tr:hover th {
+  background-color: #ed9fee;
+}
+td.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;   /* vertikalno centriraj sve */
+}
+
+td.actions form {
+  margin: 0;             /* ukloni default margine */
+}
+
+td.actions button {
+  display: inline-block;
+  vertical-align: middle;
+  height: 40px;          /* ista visina za sva dugmad */
+  line-height: 40px;     /* tekst centriran vertikalno */
+  padding: 0 16px;       /* unutrašnji razmak levo/desno */
+  border-radius: 6px;
+}
+td.actions .btn-danger {
+  background-color: #de2289;
+  color: white;
+  border: 1px solid #e11d48;
+}
+
+/* Navigacija */
+nav {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+nav a {
+  text-decoration: none;
+  color: #bfaaf2;
+  margin: 0 15px;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+td.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+td.actions form {
+  margin: 0;
+}
+
+td.actions button {
+  height: 36px;
+  line-height: 36px;
+  padding: 0 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+th, td {
+  border-bottom: none !important;
+  background-color: inherit;
+}
+
+/* nacrtaj jednu liniju ispod svakog reda – bez vertikalnih prekida */
+tbody tr {
+  box-shadow: inset 0 -1px #ddd;
+}
+tbody tr:last-child {
+  box-shadow: none;
+}
+
+/* hover bojimo ceo red, ne td po td (da nema šavova) */
+tbody tr:hover {
+  background-color: #ed9fee;
+}
+/* PROGRES BAR */
+.progress {
+  position: relative;
+  width: 160px;         /* po želji */
+  height: 10px;
+  background: rgba(255,255,255,0.35); /* svetla staza da pase uz tvoj pink */
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress__fill {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  background: #c60382;  
+  transition: width .25s ease;
+  border-radius: 999px;
+}
+.progress__label {
+  margin-left: 8px;
+  font-size: 14px;
+  color: #3d0228;
+  opacity: .9;
+}
+
+/* fluidne širine i fontovi */
+.container { max-width: min(800px, 92vw); }
+h1 { font-size: clamp(24px, 4vw, 42px); text-align: center; }
+h2 { font-size: clamp(18px, 3vw, 28px); }
+
+/* MOBILNO: ≤ 700px – forma iz reda u kolonu, elementi 100% širine */
+@media (max-width: 700px) {
+  body { padding: 16px; }
+  .container { padding: 20px; border-radius: 12px; }
+
+  /* forma za dodavanje navike */
+  form { flex-direction: column; gap: 10px; align-items: stretch; }
+  input, select, button, textarea { width: 100%; margin-bottom: 10px; }
+
+  /* tabela: omogućimo horizontalni scroll umesto lomljenja */
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+  th, td { padding: 10px; }
+}
+
+/* vrlo mali ekrani */
+@media (max-width: 400px) {
+  h1 { margin-bottom: 16px; }
+}
+
+
+/* === FIX za poravnanje akcija (zalepi na kraj fajla) === */
+td.actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+/* ukloni uticaj wrapper forme */
+td.actions form {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: contents !important;   /* form ne pravi "kutiju" */
+}
+
+
+td.actions button,
+td.actions .btn-danger,
+td.actions .ok,
+td.actions .muted {
+  margin: 0 !important;        
+  height: 35px !important;
+  line-height: 35px !important;
+  padding: 0 16px !important;
+  border-radius: 8px !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+}

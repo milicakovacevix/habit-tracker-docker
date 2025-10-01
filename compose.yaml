@@ -1,0 +1,41 @@
+name: habit-tracker
+
+services:
+  app:
+    container_name: habit-app
+    build:
+      context: .
+      dockerfile: dockerfile
+    image: habit-tracker/app:sqlite
+    env_file:
+      - ./env/app.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./static:/app/static:ro
+      - ./templates:/app/templates:ro
+      - appdata:/data
+    networks:
+      - habit-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8000/health || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  habit-net:
+    external: true
+    name: habit-net
+
+volumes:
+  appdata:
+    external: true
+    name: appdata
+

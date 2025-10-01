@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Habit Tracker</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='haiti.ico') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { padding: 10px; border-bottom: 1px solid #ccc; text-align: left; }
+
+    /* dugmad i mini-forme u tabeli */
+    form { display: inline; }
+    button { padding: 6px 10px; cursor: pointer; border-radius: 4px; }
+    .ok { background: #f29be5; border: 1px solid #e11d48; }      /* aktivno (poništi danas) */
+    .muted { background: #de2289; border: 1px solid #e11d48; }    /* pasivno (danas odrađeno) */
+    .btn-muted { background: #f29be5; border: 1px solid #e11d48; }
+    .btn-danger { background: #de2289; border: 1px solid #e11d48; }
+
+    td.actions { white-space: nowrap; }
+    .edit-fields input { width: 140px; padding: 6px; margin-right: 6px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Moja aplikacija za praćenje navika</h1>
+    <hr>
+  </header>
+
+  <main class="container">
+    <!-- DODAVANJE NAVIKE -->
+    <section>
+      <h2>Dodaj novu naviku</h2>
+      <form method="POST" action="{{ url_for('index') }}">
+        <label for="name">Naziv navike:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="frequency">Koliko puta nedeljno?</label>
+        <input type="number" id="frequency" name="frequency" min="1" required>
+
+        <button type="submit">Dodaj</button>
+      </form>
+    </section>
+
+    <hr>
+
+    <!-- PRIKAZ NAVIKA -->
+    <section style="margin-top: 2rem;">
+      <h2>Moje navike</h2>
+      {% if habits %}
+        <table>
+          <thead>
+            <tr>
+              <th>Naziv navike</th>
+              <th>Cilj (nedeljno)</th>
+              <th>Napredak ove nedelje</th>
+              <th>Akcije</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for habit in habits %}
+              <tr>
+                <!-- naziv -->
+                <td>{{ habit.name }}</td>
+
+                <!-- cilj nedeljno -->
+                <td>{{ habit.frequency }}</td>
+
+                <!-- koliko puta je urađena u tekućoj nedelji -->
+                <td>
+                  <div style="display:flex; align-items:center;">
+                    <div class="progress">
+                      <div class="progress__fill"
+                           style="width: {{ (habit.count_week * 100 // habit.frequency) }}%;"></div>
+                    </div>
+                    <span class="progress__label">{{ habit.count_week }}/{{ habit.frequency }}</span>
+                  </div>
+                </td>
+                <!-- akcije: danas toggle, izmena, brisanje -->
+                <td class="actions">
+                  <!-- Danas odrađeno / Poništi danas -->
+                  
+                    <button type="button"
+                            class="toggle-btn {{ 'ok' if habit.today_done else 'muted' }}"
+                            data-id="{{habit.id}}">
+                      {{ 'Poništi danas' if habit.today_done else 'Danas odrađeno' }}
+                    </button>
+                  
+                
+                  <!-- Brisanje sa potvrdom -->
+                  <form method="POST" action="{{ url_for('delete', hid=habit.id) }}"
+                        onsubmit="return confirm('Obrisati ovu naviku?');">
+                    <button type="submit" class="btn-danger">Obriši</button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>Još uvek nema dodatih navika. Dodaj prvu gore 👆</p>
+      {% endif %}
+    </section>
+  </main>
+  <script>
+    document.querySelectorAll(".toggle-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const hid = btn.dataset.id;
+        fetch(`/toggle/${hid}`, { method: "POST" })
+          .then(() => {
+            // kratko osveženje bez skoka na vrh
+            location.reload();
+          })
+          .catch(console.error);
+      });
+    });
+    </script>
+    
+</body>
+</html>
