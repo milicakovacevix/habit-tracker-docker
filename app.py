@@ -7,10 +7,12 @@ app = Flask(__name__)
 
 DB_FILE = os.getenv("DB_PATH", "habits.db") 
 
+_dir = os.path.dirname(DB_FILE)
+if _dir:
+    os.makedirs(_dir, exist_ok=True)
 
 def get_conn():
-    """Vrati konekciju na lokalnu SQLite bazu."""
-    return sqlite3.connect(DB_FILE)
+    return sqlite3.connect(DB_FILE, check_same_thread=False)
 def ensure_schema():
     conn = get_conn()
     cur = conn.cursor()
